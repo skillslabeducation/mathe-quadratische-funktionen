@@ -43,7 +43,7 @@
     } else {
       teilA = z.mischen([4, 5, 6, 8, 10, 11, 14]).slice(0, 4).concat([z.wahl([1, 3])]).sort(aufsteigend).map(wb)
         .concat([thema(z.wahl(['thema-08', 'thema-05', 'thema-06', 'thema-02']))]);
-      teilB = z.mischen([7, 9, 12, 13, 15]).slice(0, 2).sort(aufsteigend).map(wb);
+      teilB = z.mischen([7, 9, 12, 13]).slice(0, 2).sort(aufsteigend).map(wb); // ohne Nr. 15 (Pythagoras)
     }
     // Skizze als offene Aufgabe (Selbstbewertung)
     var a = z.wahl([1, -1, 2, -2, 0.5, -0.5]), d = z.int(-3, 3), e = z.int(-4, 3);
