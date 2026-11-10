@@ -345,7 +345,8 @@
       var h = ['<strong>Lösungsweg</strong><ol class="schritte">'];
       for (var i = 0; i < wegSchritt; i++) {
         var s = a.weg[i];
-        h.push('<li>' + (s.text ? '<div class="schritt-text">' + mathe(s.text) + '</div>' : '') + (s.tex ? '<div class="schritt-formel">' + katex(s.tex, true) + '</div>' : '') + '</li>');
+        h.push('<li>' + (s.text ? '<div class="schritt-text">' + mathe(s.text) + '</div>' : '') + (s.tex ? '<div class="schritt-formel">' + katex(s.tex, true) + '</div>' : '') +
+          (s.graph ? '<div class="graph">' + ui.plot(s.graph) + '</div>' : '') + '</li>');
       }
       h.push('</ol>');
       if (wegSchritt < a.weg.length) h.push('<div class="weg-knoepfe"><button type="button" class="knopf klein" data-w="weiter">Nächster Schritt</button> <button type="button" class="knopf klein leise-knopf" data-w="alle">Alle Schritte zeigen</button></div>');

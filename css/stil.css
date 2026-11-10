@@ -314,3 +314,15 @@ table.verlauf th, table.verlauf td { border-bottom: 1px solid var(--linie); padd
 .klickflaeche svg { cursor: crosshair; max-width: 100%; height: auto; touch-action: manipulation; }
 .klickflaeche .marker { fill: #d0452f; stroke: #fff; stroke-width: 2; }
 .klick-info { margin-top: 4px; }
+
+/* Wiederholungsblatt */
+.kachel.wichtig { border: 2px solid var(--akzent); background: var(--akzent-hell); }
+.kachel.wichtig .kachel-titel { font-size: 1.15rem; }
+.wb-liste { list-style: none; padding: 0; margin: 0; }
+.wb-zeile { background: var(--karte); border: 1px solid var(--linie); border-radius: var(--radius); margin-bottom: 10px; padding: 10px 14px; }
+.wb-kopf { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wb-nr { font-weight: 700; color: var(--akzent); min-width: 1.6em; font-size: 1.05rem; }
+.wb-titel { flex: 1 1 240px; font-weight: 600; }
+.wb-status { display: flex; gap: 4px; }
+.wb-knoepfe { display: flex; gap: 6px; flex-wrap: wrap; }
+.wb-platz:not(:empty) { margin-top: 12px; }

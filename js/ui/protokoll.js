@@ -60,7 +60,7 @@
   function fehler(titel, erster) { ereignis({ art: 'fehler', titel: titel, ok: erster ? 1 : 0 }); }
 
   /* ---------- Ansicht ---------- */
-  var NAMEN = { start: 'Übersicht', aufwaermen: 'Aufwärmen', probearbeit: 'Probearbeit', fehler: 'Fehler finden', merkblatt: 'Merkblatt' };
+  var NAMEN = { start: 'Übersicht', aufwaermen: 'Aufwärmen', probearbeit: 'Probearbeit', fehler: 'Fehler finden', merkblatt: 'Merkblatt', wiederholung: 'Wiederholungsblatt' };
   function name(b) {
     if (NAMEN[b]) return NAMEN[b];
     var t = (M.THEMEN || []).filter(function (x) { return x.id === b; })[0];

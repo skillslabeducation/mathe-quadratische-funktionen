@@ -24,22 +24,27 @@
     'thema-09': [['standard', 1], ['standard', 0]],
     'thema-10': [['basis', 0], ['basis', 1]]
   };
-  var TEIL_B = [
-    ['thema-07', 'knobel', 1], ['thema-08', 'knobel', 0], ['thema-09', 'knobel', 1], ['thema-09', 'knobel', 2], ['thema-09', 'knobel', 0],
-    ['thema-10', 'standard', 0], ['thema-10', 'standard', 1], ['thema-10', 'knobel', 0], ['thema-10', 'knobel', 2], ['thema-05', 'knobel', 1], ['thema-04', 'knobel', 0]
-  ];
+  /* Aufgabentypen vom Wiederholungsblatt der Lehrerin: Nummer -> [Stufe, Index] im Bereich 'wiederholung', dazu das passende Thema */
+  var WB = { 1: ['basis', 0], 2: ['basis', 1], 3: ['basis', 2], 4: ['basis', 3], 5: ['basis', 4], 14: ['basis', 5],
+    6: ['standard', 0], 7: ['standard', 1], 8: ['standard', 2], 10: ['standard', 3], 11: ['standard', 4],
+    9: ['knobel', 0], 12: ['knobel', 1], 13: ['knobel', 2], 15: ['knobel', 3] };
+  var WB_THEMA = { 1: 'thema-01', 2: 'thema-06', 3: 'thema-03', 4: 'thema-03', 5: 'thema-07', 6: 'thema-07', 7: 'thema-10', 8: 'thema-04',
+    9: 'thema-05', 10: 'thema-07', 11: 'thema-07', 12: 'thema-10', 13: 'thema-09', 14: 'thema-03', 15: 'thema-10' };
+  function wb(nr) { var w = WB[nr], a = M.neueAufgabe('wiederholung', w[0], z, -1, w[1]); a.bereich = WB_THEMA[nr]; return a; }
+  function thema(id) { var w = z.wahl(TEIL_A[id]); return M.neueAufgabe(id, w[0], z, -1, w[1]); }
+  function aufsteigend(a, b) { return a - b; }
 
+  /* Die Probearbeit folgt dem Wiederholungsblatt (neue Zahlen), ergänzt um ein Thema vom Themenzettel, das auf dem Blatt fehlt. */
   function zusammenstellen(minuten) {
-    var themen = Object.keys(TEIL_A);
-    var aThemen = minuten === 90 ? themen.slice(0, 9) : ['thema-03', 'thema-04', 'thema-07'].concat(z.mischen(['thema-01', 'thema-02', 'thema-05', 'thema-06', 'thema-08', 'thema-09']).slice(0, 2));
-    aThemen.sort();
-    var teilA = aThemen.map(function (id) { var w = z.wahl(TEIL_A[id]); return M.neueAufgabe(id, w[0], z, -1, w[1]); });
-    var bAnz = minuten === 90 ? 4 : 2, genutzt = {}, teilB = [];
-    z.mischen(TEIL_B).forEach(function (w) {
-      if (teilB.length >= bAnz || genutzt[w[0]]) return;
-      genutzt[w[0]] = true;
-      teilB.push(M.neueAufgabe(w[0], w[1], z, -1, w[2]));
-    });
+    var teilA, teilB;
+    if (minuten === 90) {
+      teilA = [1, 3, 4, 5, 6, 8, 10, 11, 14].map(wb).concat([thema(z.wahl(['thema-08', 'thema-05', 'thema-06']))]);
+      teilB = [7, 9, 12, 13, 15].map(wb);
+    } else {
+      teilA = z.mischen([4, 5, 6, 8, 10, 11, 14]).slice(0, 4).concat([z.wahl([1, 3])]).sort(aufsteigend).map(wb)
+        .concat([thema(z.wahl(['thema-08', 'thema-05', 'thema-06', 'thema-02']))]);
+      teilB = z.mischen([7, 9, 12, 13, 15]).slice(0, 2).sort(aufsteigend).map(wb);
+    }
     // Skizze als offene Aufgabe (Selbstbewertung)
     var a = z.wahl([1, -1, 2, -2, 0.5, -0.5]), d = z.int(-3, 3), e = z.int(-4, 3);
     return { teilA: teilA, teilB: teilB, skizze: { a: a, d: d, e: e } };
@@ -52,7 +57,7 @@
     doc.title = 'Probearbeit · Mathearbeit Quadratische Funktionen';
     var bisher = M.fortschritt.probearbeiten();
     var h = [zurueck(), '<header class="seitenkopf"><p class="kicker">Training für den Ernstfall</p><h1>Probearbeit</h1>',
-      '<p class="unterzeile">Wie in der Klassenarbeit: <strong>Teil A ohne Taschenrechner</strong>, <strong>Teil B mit Taschenrechner</strong>. Während der Probearbeit gibt es keine Tipps und keine Rückmeldung. Die Auswertung kommt am Ende.</p></header>',
+      '<p class="unterzeile">Wie in der Klassenarbeit: <strong>Teil A ohne Taschenrechner</strong>, <strong>Teil B mit Taschenrechner</strong>. Die Aufgaben folgen dem Wiederholungsblatt deiner Lehrerin, mit neuen Zahlen. Während der Probearbeit gibt es keine Tipps und keine Rückmeldung. Die Auswertung kommt am Ende.</p></header>',
       '<div class="karte"><h2>Vorbereitung</h2><ul class="liste-normal"><li>Papier und Stift bereitlegen. Rechne alles auf Papier, wie in der Arbeit.</li><li>Den Taschenrechner erst für Teil B nehmen.</li><li>Handy weg, Timer läuft sichtbar mit.</li><li>Eine Aufgabe sollst du im Heft skizzieren. Die bewertest du am Ende selbst.</li></ul>',
       '<p><strong>Dauer wählen:</strong></p><div class="aktionen"><button type="button" class="knopf haupt" data-min="45">45 Minuten (kurze Arbeit)</button><button type="button" class="knopf haupt" data-min="90">90 Minuten (lange Arbeit)</button></div></div>'];
     if (bisher.length) {

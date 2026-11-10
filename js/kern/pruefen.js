@@ -31,10 +31,10 @@
     if (l && l.baum) return function (x) { return parse.auswerten(l.baum, x); };
     throw new Error('Unbekannte Termlösung');
   }
-  function termGleich(fa, fb) {
+  function termGleich(fa, fb, tol) {
     for (var i = 0; i < STELLEN.length; i++) {
       var a = fa(STELLEN[i]), b = fb(STELLEN[i]);
-      if (!isFinite(a) || !isFinite(b) || !nahe(a, b, 1e-7)) return false;
+      if (!isFinite(a) || !isFinite(b) || !nahe(a, b, tol || 1e-7)) return false;
     }
     return true;
   }
@@ -174,7 +174,7 @@
       return b;
     }
     var soll = alsFunktion(feld.loesung);
-    if (termGleich(fn, soll)) {
+    if (termGleich(fn, soll, feld.termTol)) { // termTol: relative Toleranz für gerundete Faktoren
       if (feld.form && !hatForm(eingabe, feld.form))
         return { ok: false, fast: true, meldung: 'Rechnerisch stimmt dein Term. Gefragt ist aber die ' + FORMEN[feld.form].name + '.' };
       return { ok: true };

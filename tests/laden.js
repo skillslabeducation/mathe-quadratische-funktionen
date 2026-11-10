@@ -10,7 +10,7 @@ var dateien = [
   'aufgaben/thema-03-normalparabel.js', 'aufgaben/thema-04-darstellungsformen.js',
   'aufgaben/thema-05-punkte.js', 'aufgaben/thema-06-grafisch.js', 'aufgaben/thema-07-gleichungen.js',
   'aufgaben/thema-08-schnittpunkte.js', 'aufgaben/thema-09-fragen.js', 'aufgaben/thema-10-problemloesen.js',
-  'aufgaben/fehler-finden.js'
+  'aufgaben/wiederholung.js', 'aufgaben/fehler-finden.js'
 ];
 var fs = require('fs');
 dateien.forEach(function (d) {

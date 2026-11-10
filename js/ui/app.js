@@ -33,6 +33,11 @@
       '<p class="unterzeile">Training für die Mathearbeit. Erst die Grundlagen festigen, dann die zehn Themen vom Themenzettel üben.</p>' +
       '<div class="papier-hinweis"><strong>Rechne auf Papier, gib hier nur das Ergebnis ein.</strong> In der Arbeit schreibst du auch auf Papier. Die Seite prüft dein Ergebnis und hilft, wenn du nicht weiterkommst.</div>' +
       '</header>');
+    if (M.WIEDERHOLUNG) {
+      var swb = M.fortschritt.status('wiederholung');
+      h.push('<section><a class="kachel wichtig" href="#/wiederholung"><div class="kachel-nr">Neu · von deiner Lehrerin</div><div class="kachel-titel">Wiederholungsblatt: 15 Aufgaben, so ähnlich kommt es in der Arbeit</div>' +
+        '<div class="kachel-kurz">Rechne das Blatt auf Papier und prüfe hier deine Ergebnisse. Dann jede Aufgabe mit neuen Zahlen üben.</div><div class="kachel-unten">' + ampel('wiederholung') + '</div></a></section>');
+    }
     h.push('<section><div class="abschnitt-kopf"><h2>Grundlagen festigen</h2><a class="knopf haupt" href="#/aufwaermen">Aufwärmen: 5 gemischte Aufgaben</a></div>' +
       '<p class="leise">Tipp: Starte jede Lernsitzung mit dem Aufwärmen.</p><div class="kacheln">');
     M.GRUNDLAGEN.forEach(function (id, i) {
@@ -66,7 +71,7 @@
     var t = M.THEMEN.filter(function (x) { return x.id === id; })[0];
     var gi = M.GRUNDLAGEN.indexOf(id);
     return {
-      kicker: t ? 'Thema ' + t.nr : 'Grundlage ' + (gi + 1),
+      kicker: b.kicker || (t ? 'Thema ' + t.nr : 'Grundlage ' + (gi + 1)),
       titel: b.titel, kurz: b.kurz || (t && t.kurz),
       quellen: (t && t.quellen) || b.quellen || []
     };
@@ -209,6 +214,7 @@
     if (M.protokoll) M.protokoll.seite(t[0] === 'b' && M.bereiche[t[1]] ? t[1] : (t[0] || 'start'));
     if (t[0] === 'protokoll' && M.protokoll) return M.protokoll.ansicht(app());
     if (t[0] === 'b' && M.bereiche[t[1]]) return seiteBereich(t[1], t[2], t[3]);
+    if (t[0] === 'wiederholung' && M.wiederholungSeite) return M.wiederholungSeite(app());
     if (t[0] === 'aufwaermen') return seiteAufwaermen();
     if (t[0] === 'merkblatt' && M.MERKBLATT) return seiteMerkblatt();
     if (t[0] === 'probearbeit') return M.probearbeit ? M.probearbeit(app()) : seiteFolgt('Probearbeit');

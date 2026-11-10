@@ -226,3 +226,40 @@ if (M.FEHLER) {
   if (ffehler.length) { console.log('\nFEHLER Fehler finden (' + ffehler.length + '):'); zusammenfassen(ffehler).slice(0, 20).forEach(function (m) { console.log('  ' + m); }); process.exit(1); }
   console.log('Fehler finden: ' + M.FEHLER.length + ' Vorlagen je ' + N + '-mal geprüft, in Ordnung.');
 }
+
+/* Wiederholungsblatt: Originalaufgaben gegen von Hand gerechnete Ergebnisse prüfen */
+if (M.WIEDERHOLUNG) {
+  var wfehler = [];
+  var ERWARTET = {
+    1: [1, 0],
+    2: ['-2; 2'],
+    3: [0],
+    4: ['(-3|-3)', '(1|2)', '(4|-6)', '(-2|1)'],
+    5: ['8; -8', '±20', '0,3; -0,3'],
+    6: ['-1; -11', '6; -2'],
+    7: ['12; -15'],
+    8: ['(x-2)^2+1', '(2|1)', '(x+3)^2-5', '(-3|-5)', '(x-2,5)^2-6', '(2,5|-6)', '(x-4)^2', '(4|0)'],
+    9: ['(0|73)', '-90; 90', '-73/8100', '-0,009x^2+73'],
+    10: ['0; -7', '0; 6', '0; 8', '0; 2'],
+    11: ['-4', '-0,5; -3,5'],
+    12: ['18; -17'],
+    13: ['6'],
+    14: ['(5|-7)', 0, '(-2|-8)', 1, '(4|-5)', 2],
+    15: ['20; 21']
+  };
+  M.WIEDERHOLUNG.forEach(function (w) {
+    var a = w.gen(new M.Zufall(1), true), wo = 'Wiederholungsblatt Nr. ' + w.nr + ' (Original)';
+    pruefeAufgabe(a, wo);
+    var e = ERWARTET[w.nr];
+    if (!e || e.length !== a.felder.length) { wfehler.push(wo + ': erwartet ' + (e ? e.length : 0) + ' Felder, hat ' + a.felder.length); return; }
+    a.felder.forEach(function (feld, i) {
+      var r = M.pruefe(feld, e[i]);
+      if (!r.ok) wfehler.push(wo + ' Feld ' + i + ': "' + e[i] + '" nicht akzeptiert: ' + JSON.stringify(r));
+    });
+  });
+  // ungenau gerundete Bogengleichung darf nicht durchgehen
+  var bogen = M.WIEDERHOLUNG[8].gen(new M.Zufall(1), true);
+  if (M.pruefe(bogen.felder[3], '-0,01x^2+73').ok) wfehler.push('Nr. 9: -0,01x^2+73 wird fälschlich akzeptiert');
+  if (wfehler.length) { console.log('\nFEHLER Wiederholungsblatt:'); wfehler.forEach(function (m) { console.log('  ' + m); }); process.exit(1); }
+  console.log('Wiederholungsblatt: alle 15 Originalaufgaben mit den erwarteten Ergebnissen geprüft, in Ordnung.');
+}
